@@ -1,4 +1,4 @@
-const plus = require('../plus')
+
 const server = require('../server')
 const mongojs = require('mongojs')
 
@@ -26,16 +26,9 @@ let firstIndex = ''
 const notFoundIndex = '5931221a6d0e00f95cf5f810'
 let testIndex = ''
 
-describe('Function', () => {
-  describe('plus', () => {
-    it('should plus number correctly', () => {
-      expect(plus(1, 2)).to.equal(3)
-    })
-    it('should plus number correctly', () => {
-      expect(plus(2, 4)).to.equal(6)
-    })
-  })
-})
+const dummyCorrectUrl = { url: 'http://plearn.io' }
+const dummyWrongUrl = { url: 'http://plearn.io/nothing' }
+const dummyErrorUrl = { url: '' }
 
 describe('/GET books request', () => {
   const copyFirstBook = Object.assign({}, firstBook);
@@ -159,4 +152,37 @@ describe('/DELETE single book request', () => {
         done()
       })
   })
+})
+
+describe('/POST crawling', () => {
+  it('it should POST url and show succesful to get the url', (done) => {
+    chai.request(server)
+      .post('/crawling')
+      .send(dummyCorrectUrl)
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.text.should.equal('Success status code : 200')
+        done()
+      })
+  }).timeout(20000)
+  it('it should POST url but show unsuccesful to get the url', (done) => {
+    chai.request(server)
+      .post('/crawling')
+      .send(dummyWrongUrl)
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.text.should.not.equal('Success status code : 200')
+        done()
+      })
+  }).timeout(20000)
+  it('it should POST url but show unsuccesful to get the url', (done) => {
+    chai.request(server)
+      .post('/crawling')
+      .send(dummyErrorUrl)
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.text.should.not.equal('Success status code : 200')
+        done()
+      })
+  }).timeout(20000)
 })
