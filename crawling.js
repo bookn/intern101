@@ -1,29 +1,15 @@
 const cron = require('cron')
 const http = require('http')
-const express = require('express')
 const url = require('url')
 const async = require('async')
 
-const crawling = express.Router()
 const INTERVAL = 3000
 const RETRY = 5
 
-scraper = () => {
-  const job = new cron.CronJob({
-    cronTime: '* * * * * *',
-    onTick: () => {
-      // do something
-    },
-    start: false,
-    timeZone: 'Asia/Bangkok'
-  })
-  job.start()
-}
-
-crawling.route('/')
-  .post((reqClient, resClient) => {
-    urlstring = reqClient.body.url
-    const parsedurl = url.parse(urlstring)
+const crawling = {
+  a: 0,
+  getOpts(urlString) {
+    const parsedurl = url.parse(urlString)
     const options = {
       host: parsedurl.hostname,
       port: (parsedurl.port || 80),
@@ -31,33 +17,51 @@ crawling.route('/')
       method: 'GET',
       headers: {}
     }
-    const cookies = ['']
-    options.headers.Cookies = cookies.join('; ')
+    return options
+  },
+  scrape(urlString, urlDestString) {
+    options = this.getOpts(urlString)
     async.retry({ times: RETRY, interval: INTERVAL }, (callback) => {
-      const reqDestination = http.request(options, (resDestination) => {
-        if (resDestination.statusCode === 200) {
-          console.log(resDestination.statusCode)
+      const req = http.request(options, (res) => {
+        if (res.statusCode === 200) {
           callback(null, { messege: 'Success - status code : 200' })
         } else {
-          console.log(resDestination.statusCode)
-          console.log('retry')
-          callback({ messege: `Unsuccess - status code : ${resDestination.statusCode}` }, null)
+          console.log(`Get status code ${res.statusCode}, retry`)
+          callback({ messege: `Unsuccess - status code : ${res.statusCode}` }, null)
         }
       })
-      reqDestination.on('error', () => {
-        // console.log('Error, retry')
-        callback({ messege: 'Error' }, null)
+      req.on('error', () => {
+        console.log('Get error, retry')
+        callback({ messege: 'Get error' }, null)
       })
-      reqDestination.end()
+      req.end()
     }, (err, result) => {
       if (err) {
-        console.log(err)
-        resClient.end('Unsuccess !')
+        options = this.getOpts(urlDestString)
+        const reqDest = http.request(options, (resDest) => {
+          if (resDest.statusCode === 200) console.log(`Change destination to ${urlDestString} success !`)
+          else console.log(`Cannot change destination to ${urlDestString} !`)
+        })
+        reqDest.on('error', () => {
+          console.log('Cannot connect to destination')
+        })
+        reqDest.end()
+        console.log(err.messege)
       } else {
         console.log(result)
-        resClient.end('Success !')
       }
     })
-  })
-
+  },
+  jobStart() {
+    job = new cron.CronJob({
+      cronTime: '0 * * * * *',
+      onTick: () => {
+        this.scrape(process.env.URL, process.env.DESTINATION_URL)
+      },
+      start: false,
+      timeZone: 'Asia/Bangkok'
+    })
+    job.start()
+  }
+}
 module.exports = crawling

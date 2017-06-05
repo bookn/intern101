@@ -10,7 +10,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/books', router)
-app.use('/crawling', crawling)
+crawling.jobStart()
+
 app.listen(PORT, () => {
   console.log(`Server run at port ${PORT}`)
 })
