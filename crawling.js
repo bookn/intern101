@@ -52,7 +52,7 @@ crawling.route('/')
       if (err) {
         console.log(err)
         resClient.end('Unsuccess !')
-      } else { 
+      } else {
         console.log(result)
         resClient.end('Success !')
       }
