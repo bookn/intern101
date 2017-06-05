@@ -7,7 +7,8 @@
     "test": "mocha",
     "coverage": "istanbul cover node_modules/.bin/_mocha",
     "start-dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "cron-google": "URL=https://google.com DESINATION_URL=localhost:3000 node crawling.js"
   },
   "author": "",
   "license": "ISC",

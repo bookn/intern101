@@ -15,5 +15,5 @@ app.listen(PORT, () => {
   console.log(`Server run at port ${PORT}`)
 })
 
+console.log(process.env.URL)
 module.exports = app;
-
