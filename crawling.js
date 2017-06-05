@@ -5,6 +5,8 @@ const url = require('url')
 const async = require('async')
 
 const crawling = express.Router()
+const INTERVAL = 3000
+const RETRY = 5
 
 scraper = () => {
   const job = new cron.CronJob({
@@ -31,11 +33,10 @@ crawling.route('/')
     }
     const cookies = ['']
     options.headers.Cookies = cookies.join('; ')
-    async.retry({ times: 3, interval: 2000 }, (callback) => {
+    async.retry({ times: RETRY, interval: INTERVAL }, (callback) => {
       const reqDestination = http.request(options, (resDestination) => {
         if (resDestination.statusCode === 200) {
           console.log(resDestination.statusCode)
-          resCli.end(`Unsuccess status code : ${res.statusCode}`)
           callback(null, { messege: 'Success - status code : 200' })
         } else {
           console.log(resDestination.statusCode)
@@ -44,7 +45,7 @@ crawling.route('/')
         }
       })
       reqDestination.on('error', () => {
-        console.log('retry')
+        console.log('Error, retry')
         callback({ messege: 'Error' }, null)
       })
       reqDestination.end()
