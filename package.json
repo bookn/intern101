@@ -4,8 +4,10 @@
   "description": "internship in jitta",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "checkcov": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "coverage": "istanbul cover node_modules/.bin/_mocha",
+    "start-dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,9 +19,11 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0"
   },
   "dependencies": {
+    "async": "^2.4.1",
     "body-parser": "^1.17.2",
     "chai": "^4.0.1",
     "cron": "^1.2.1",
