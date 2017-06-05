@@ -45,7 +45,7 @@ crawling.route('/')
         }
       })
       reqDestination.on('error', () => {
-        console.log('Error, retry')
+        // console.log('Error, retry')
         callback({ messege: 'Error' }, null)
       })
       reqDestination.end()
