@@ -3,13 +3,16 @@ const http = require('http')
 const url = require('url')
 const async = require('async')
 
-const INTERVAL = 3000
-const RETRY = 5
+const INTERVAL = 1000
+const RETRY = 3
 
-const crawling = {
-  a: 0,
-  getOpts(urlString) {
-    const parsedurl = url.parse(urlString)
+class Crawling {
+  constructor(urlString, urlDestString) {
+    this.urlString = urlString;
+    this.urlDestString = urlDestString;
+  }
+  getOpts(strUrl) {
+    const parsedurl = url.parse(strUrl)
     const options = {
       host: parsedurl.hostname,
       port: (parsedurl.port || 80),
@@ -18,10 +21,10 @@ const crawling = {
       headers: {}
     }
     return options
-  },
-  scrape(urlString, urlDestString) {
-    options = this.getOpts(urlString)
+  }
+  scrape() {
     async.retry({ times: RETRY, interval: INTERVAL }, (callback) => {
+      const options = this.getOpts(this.urlString)
       const req = http.request(options, (res) => {
         if (res.statusCode === 200) {
           callback(null, { messege: 'Success - status code : 200' })
@@ -37,10 +40,10 @@ const crawling = {
       req.end()
     }, (err, result) => {
       if (err) {
-        options = this.getOpts(urlDestString)
+        const options = this.getOpts(this.urlDestString)
         const reqDest = http.request(options, (resDest) => {
-          if (resDest.statusCode === 200) console.log(`Change destination to ${urlDestString} success !`)
-          else console.log(`Cannot change destination to ${urlDestString} !`)
+          if (resDest.statusCode === 200) console.log(`Change destination to ${this.urlDestString} success !`)
+          else console.log(`Cannot change destination to ${this.urlDestString} !`)
         })
         reqDest.on('error', () => {
           console.log('Cannot connect to destination')
@@ -51,12 +54,12 @@ const crawling = {
         console.log(result)
       }
     })
-  },
+  }
   jobStart() {
-    job = new cron.CronJob({
-      cronTime: '0 * * * * *',
+    const job = new cron.CronJob({
+      cronTime: '*/10 * * * * *',
       onTick: () => {
-        this.scrape(process.env.URL, process.env.DESTINATION_URL)
+        this.scrape(this.urlString, this.urlDestString)
       },
       start: false,
       timeZone: 'Asia/Bangkok'
@@ -64,4 +67,4 @@ const crawling = {
     job.start()
   }
 }
-module.exports = crawling
+module.exports = Crawling
