@@ -7,8 +7,7 @@
     "test": "mocha",
     "coverage": "istanbul cover node_modules/.bin/_mocha",
     "start-dev": "nodemon server.js",
-    "start": "node server.js",
-    "cron-google": "URL=https://google.com DESTINATION_URL=http://localhost:3000/books node server.js"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,12 +23,11 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "async": "^2.4.1",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "chai": "^4.0.1",
-    "cron": "^1.2.1",
     "express": "^4.15.3",
     "mocha": "^3.4.2",
-    "mongojs": "^2.4.0"
+    "mongoose": "^4.10.4"
   }
 }

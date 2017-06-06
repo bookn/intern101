@@ -1,13 +1,12 @@
 
 const server = require('../server')
-const mongojs = require('mongojs')
+const Book = require('../models/schema')
 
-const db = mongojs('internjitta_test', ['books'])
-const dummyBook = {
+const dummyBook = Book({
   name: 'BookTest',
   price: 100,
   author: 'J.R.R. Tolkien',
-}
+})
 
 const updateBook = {
   name: 'BookSecond',
@@ -15,28 +14,25 @@ const updateBook = {
   author: 'J.R.R. Tolkien',
 }
 
-const firstBook = {
+const firstBook = Book({
   name: 'BookFirst',
   price: 100,
   author: 'J.R.R. Tolkien',
-}
+})
 
 const dummyNumber = 0
 let firstIndex = ''
 const notFoundIndex = '5931221a6d0e00f95cf5f810'
 let testIndex = ''
 
-const dummyCorrectUrl = { url: 'http://plearn.io' }
-const dummyWrongUrl = { url: 'http://plearn.io/nothing' }
-const dummyErrorUrl = { url: '' }
-
 describe('/GET books request', () => {
-  const copyFirstBook = Object.assign({}, firstBook);
-  db.books.drop((err) => {
+  Book.remove({}, (err) => {
     if (err) res.send(err)
-    db.books.insert(copyFirstBook, (errInsert) => {
-      if (errInsert) res.send(err)
-    })
+    else {
+      firstBook.save((errInsert) => {
+        if (errInsert) res.send(err)
+      })
+    }
   })
   it('it should GET all the books', (done) => {
     chai.request(server)
@@ -44,8 +40,8 @@ describe('/GET books request', () => {
       .end((errGet, res) => {
         res.should.have.status(200)
         res.body.should.be.a('array')
-        db.books.findOne({ name: 'BookFirst' }, (errDB, docs) => {
-          firstIndex = docs._id
+        Book.find({ name: 'BookFirst' }, (errDB, docs) => {
+          firstIndex = docs[0]._id
           done()
         })
       })
@@ -61,8 +57,8 @@ describe('/POST books request', () => {
         res.should.have.status(200)
         res.body.should.be.a('object')
         res.text.should.equal('Post Success !')
-        db.books.findOne({ name: 'BookTest' }, (errDB, docs) => {
-          testIndex = docs._id
+        Book.find({ name: 'BookTest' }, (errDB, docs) => {
+          testIndex = docs[0]._id
           done()
         })
       })
@@ -83,7 +79,7 @@ describe('/POST books request', () => {
 describe('/GET single book request', () => {
   it('it should GET one of books', (done) => {
     chai.request(server)
-      .get(('/books/').concat(firstIndex))
+      .get(`/books/${firstIndex}`)
       .end((err, res) => {
         res.should.have.status(200)
         res.body.should.have.property('name').equal('BookFirst')
@@ -92,7 +88,7 @@ describe('/GET single book request', () => {
   })
   it('it shouldn\'t GET the book if wrong id format', (done) => {
     chai.request(server)
-      .get(('/books/').concat(dummyNumber))
+      .get(`/books/${dummyNumber}`)
       .end((err, res) => {
         res.should.have.status(200)
         res.text.should.equal('Wrong ID type')
@@ -101,7 +97,7 @@ describe('/GET single book request', () => {
   })
   it('it should GET null if not found', (done) => {
     chai.request(server)
-      .get(('/books/').concat(notFoundIndex))
+      .get(`/books/${notFoundIndex}`)
       .end((err, res) => {
         res.should.have.status(200)
         res.should.have.property('body').equal(null)
@@ -113,7 +109,7 @@ describe('/GET single book request', () => {
 describe('/PUT single book request', () => {
   it('it should PUT one book', (done) => {
     chai.request(server)
-      .put(('/books/').concat(firstIndex))
+      .put(`/books/${firstIndex}`)
       .send(updateBook)
       .end((err, res) => {
         res.should.have.status(200)
@@ -131,7 +127,7 @@ describe('/GET -> PUT single book request', () => {
         resGet.should.have.status(200)
         resGet.body.should.have.property('name').equal('BookSecond')
         chai.request(server)
-        .put(('/books/').concat(firstIndex))
+        .put(`/books/${firstIndex}`)
         .send(firstBook)
         .end((errPut, resPut) => {
           resPut.should.have.status(200)
@@ -145,44 +141,11 @@ describe('/GET -> PUT single book request', () => {
 describe('/DELETE single book request', () => {
   it('it should GET one book', (done) => {
     chai.request(server)
-      .delete(('/books/').concat(testIndex))
+      .delete(`/books/${testIndex}`)
       .end((errGet, res) => {
         res.should.have.status(200)
         res.text.should.equal('Delete Success !')
         done()
       })
   })
-})
-
-describe('/POST crawling', () => {
-  it('it should POST url and show succesful to get the url', (done) => {
-    chai.request(server)
-      .post('/crawling')
-      .send(dummyCorrectUrl)
-      .end((err, res) => {
-        res.should.have.status(200)
-        res.text.should.equal('Success status code : 200')
-        done()
-      })
-  }).timeout(20000)
-  it('it should POST url but show unsuccesful to get the url', (done) => {
-    chai.request(server)
-      .post('/crawling')
-      .send(dummyWrongUrl)
-      .end((err, res) => {
-        res.should.have.status(200)
-        res.text.should.not.equal('Success status code : 200')
-        done()
-      })
-  }).timeout(20000)
-  it('it should POST url but show unsuccesful to get the url', (done) => {
-    chai.request(server)
-      .post('/crawling')
-      .send(dummyErrorUrl)
-      .end((err, res) => {
-        res.should.have.status(200)
-        res.text.should.not.equal('Success status code : 200')
-        done()
-      })
-  }).timeout(20000)
 })
