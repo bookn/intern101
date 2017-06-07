@@ -1,14 +1,17 @@
 const mongoose = require('mongoose')
 mongoose.Promise = require('bluebird')
+const config = require('../config').mongo
 
-mongoose.connect('mongodb://localhost:27017/internjitta_test')
+mongoose.connect(`mongodb://${config.host}:${config.port}/${config.database}`)
+
 const Schema = mongoose.Schema
-const collectionName = 'books'
+
 const bookScheme = new Schema({
   name: String,
   price: Number,
   author: String
 })
-const Book = mongoose.model('Book', bookScheme, collectionName)
 
-module.exports = Book
+const Book = mongoose.model(config.nameCollection, bookScheme)
+
+module.exports = { Book }
