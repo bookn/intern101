@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<title>Result Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
+</style>
+<script> 
+getResult = () => {
+  var http = new XMLHttpRequest()
+  var url = "/demo/getresult"
+  http.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     document.getElementById("demo").innerHTML = this.responseText;
+     console.log(this.responseText)
+    }
+  }
+  http.open("GET", url, true)
+  http.send()
+}
+</script>
+<body class="w3-light-grey" onload="getResult()">
+<div id="demo">
+    wait result
+</div>
+</body>
+</html>

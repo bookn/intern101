@@ -6,8 +6,8 @@
   "scripts": {
     "test": "mocha",
     "coverage": "istanbul cover node_modules/.bin/_mocha",
-    "start-dev": "nodemon server.js",
-    "start": "node server.js"
+    "start-dev": "nodemon --delay 1 index.js",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -26,8 +26,10 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "chai": "^4.0.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
     "mocha": "^3.4.2",
-    "mongoose": "^4.10.4"
+    "mongoose": "^4.10.4",
+    "path": "^0.12.7"
   }
 }

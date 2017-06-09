@@ -1,6 +1,6 @@
 
 const server = require('../server')
-const Book = require('../models/schema').Book
+const Book = require('../models/Book')
 
 const dummyBook = Book({
   name: 'BookTest',

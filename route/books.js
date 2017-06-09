@@ -1,14 +1,14 @@
 const express = require('express')
-const Book = require('./models/schema').Book
+const Book = require('../models/Book')
 
-const router = express.Router()
+const books = express.Router()
 
-router.use((req, res, next) => {
-  // Preempt
+books.use((req, res, next) => {
+  // preempt
   next()
 })
 
-router.route('/')
+books.route('/')
   .get((req, res) => {
     Book.find({}, (err, docs) => {
       if (err) res.send(err)
@@ -27,7 +27,7 @@ router.route('/')
     }
   })
 
-router.route('/:id')
+books.route('/:id')
   .get((req, res) => {
     const id = req.params.id
     Book.findById(id, (err, docs) => {
@@ -51,4 +51,4 @@ router.route('/:id')
     })
   })
 
-module.exports = router
+module.exports = books
