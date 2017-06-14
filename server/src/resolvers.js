@@ -1,3 +1,6 @@
+
+import { View } from './connectors'
+
 const channels = [{
   id: '1',
   name: 'soccer',
@@ -19,6 +22,7 @@ const channels = [{
     text: 'hello baseball world series',
   }]
 }];
+
 let nextId = 3;
 let nextMessageId = 5;
 
@@ -27,12 +31,30 @@ export const resolvers = {
     channels: () => {
       return channels;
     },
+    channel: (root, { id }) => {
+      return channels.find(channel => channel.id === id);
+    },
+    views: () => {
+      return View.find({}).lean().exec()
+             .then((view) => {
+               console.log(view)
+               return view
+              })
+    }
   },
   Mutation: {
     addChannel: (root, args) => {
       const newChannel = { id: String(nextId++), messages: [], name: args.name };
       channels.push(newChannel);
       return newChannel;
+    },
+    addMessage: (root, { message }) => {
+      const channel = channels.find(channel => channel.id === message.channelId);
+      if(!channel)
+        throw new Error("Channel does not exist");
+      const newMessage = { id: String(nextMessageId++), text: message.text };
+      channel.messages.push(newMessage);
+      return newMessage;
     },
   },
 };

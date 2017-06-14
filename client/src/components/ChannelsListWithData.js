@@ -10,7 +10,7 @@ import {
 
 import AddChannel from './AddChannel';
 
-const ChannelsList = ({ data: {loading, error, channels }}) => {
+const ChannelsList = ({ data: {loading, error, channels, views }}) => {
   if (loading) {
     return <p>Loading ...</p>;
   }
@@ -28,6 +28,13 @@ const ChannelsList = ({ data: {loading, error, channels }}) => {
           </Link>
         </div>)
       )}
+      { views.map( (view) =>
+        (<div key={view._id} className="channel">
+          <Link to="/">
+            {view.views}
+          </Link>
+        </div>)
+      )}
     </div>
   );
 };
@@ -37,6 +44,11 @@ export const channelsListQuery = gql`
     channels {
       id
       name
+    }
+    views {
+      _id
+      postId
+      views
     }
   }
 `;
