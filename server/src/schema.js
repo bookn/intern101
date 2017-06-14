@@ -31,7 +31,8 @@ input MessageInput{
 # This type specifies the entry points into our API
 type Query {
   channels: [Channel]    # "[]" means this is a list of channels
-  channel(id: ID!): Channel
+  channelById(id: ID!): Channel
+  channelname(name: String!): [Channel]
   views: [View]
 }
 
@@ -39,6 +40,7 @@ type Query {
 type Mutation {
   addChannel(name: String!): Channel
   addMessage(message: MessageInput!): Message
+  searchChannel(name: String!): [Channel]
 }
 `;
 

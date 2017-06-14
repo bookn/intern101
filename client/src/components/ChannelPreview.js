@@ -5,11 +5,11 @@ import {
 } from 'react-apollo';
 
 
-const ChannelPreview = ({ data: {loading, error, channel } }) => {  
+const ChannelPreview = ({ data: {loading, error, channelById } }) => {  
 return (
     <div>
       <div className="channelName">
-        {channel ? channel.name : 'Loading...'}
+        {channelById ? channelById.name : 'Loading...'}
       </div>
       <div>Loading Messages</div>
     </div>
@@ -18,7 +18,7 @@ return (
 
 export const channelQuery = gql`
   query ChannelQuery($channelId : ID!) {
-    channel(id: $channelId) {
+    channelById(id: $channelId) {
       id
       name
     }

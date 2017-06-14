@@ -26,18 +26,28 @@ const channels = [{
 let nextId = 3;
 let nextMessageId = 5;
 
+const filterItems = (arr, query) => {
+  console.log(arr)
+  return arr.filter( (el) => {
+    console.log(el)
+    return el.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
+    })
+}
+
 export const resolvers = {
   Query: {
     channels: () => {
       return channels;
     },
-    channel: (root, { id }) => {
+    channelById: (root, { id }) => {
       return channels.find(channel => channel.id === id);
+    },
+    channelname: (root, { name }) => {
+      return filterItems(channels, name);
     },
     views: () => {
       return View.find({}).lean().exec()
              .then((view) => {
-               console.log(view)
                return view
               })
     }
@@ -56,5 +66,8 @@ export const resolvers = {
       channel.messages.push(newMessage);
       return newMessage;
     },
+    searchChannel: (root, args) => {
+      return filterItems(channels, args.name);
+    }
   },
 };

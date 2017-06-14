@@ -39,12 +39,12 @@ const client = new ApolloClient({
   networkInterface,
   customResolvers: {
     Query: {
-      channel: (_, args) => {
+      channelById: (_, args) => {
         return toIdValue(dataIdFromObject({ __typename: 'Channel', id: args['id'] }))
       },
     },
   },
-  dataIdFromObject,
+  dataIdFromObject: o => o.id,
 });
 
 
@@ -54,7 +54,7 @@ class App extends Component {
       <ApolloProvider client={client}>
         <BrowserRouter>
           <div className="App">
-            <Link to="/" className="navbar">React + GraphQL Tutorial</Link>
+            <Link to="/" className="navbar">Tracking E-Mail<span className="sub">&nbsp;: By Plearn.io</span></Link>
             <Switch>
               <Route exact path="/" component={ChannelsListWithData}/>
               <Route path="/channel/:channelId" component={ChannelDetails}/>
