@@ -1,6 +1,5 @@
 import {
   makeExecutableSchema,
-  addMockFunctionsToSchema,
 } from 'graphql-tools';
 
 import { resolvers } from './resolvers';
@@ -17,10 +16,10 @@ type Message {
   text: String
 }
 
-type View {
+type EmailConfigs {
   _id: ID!
-  postId: Int
-  views: Int
+  name: String
+  description: String
 }
 
 input MessageInput{
@@ -33,7 +32,7 @@ type Query {
   channels: [Channel]    # "[]" means this is a list of channels
   channelById(id: ID!): Channel
   channelname(name: String!): [Channel]
-  views: [View]
+  emailconfigs: [EmailConfigs]
 }
 
 # The mutation root type, used to define all mutations
@@ -42,7 +41,6 @@ type Mutation {
   addMessage(message: MessageInput!): Message
   searchChannel(name: String!): [Channel]
 }
-`;
+`
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
-export { schema };
+export const schema = makeExecutableSchema({ typeDefs, resolvers })

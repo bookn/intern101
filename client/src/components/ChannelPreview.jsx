@@ -5,7 +5,7 @@ import {
 } from 'react-apollo';
 
 
-const ChannelPreview = ({ data: {loading, error, channelById } }) => {  
+const ChannelPreview = ({ data: { loading, error, channelById } }) => {  
 return (
     <div>
       <div className="channelName">

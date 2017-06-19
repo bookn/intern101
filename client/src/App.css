@@ -1,7 +1,6 @@
 html, body {
   padding: 0;
   margin: 0;
-  height: 100%;
   background-color: #1E1E1E;
 }
 
@@ -51,8 +50,8 @@ div.NotFound {
 
 .navbar:before {
   content: "";
-  height: 80px;
-  width: 100px;
+  height: 60px;
+  width: 80px;
   display: inline-block;
   background-image: url('./apollo-logo.svg');
   background-repeat: no-repeat;
@@ -62,13 +61,13 @@ div.NotFound {
 }
 
 .sub {
-  font-size: 80%;
+  font-size: 60%;
   opacity: 0.5;
 }
 
 div.channelsList {
   padding: 0 30px;
-  position: fixed;
+  /*position: fixed;*/
 }
 
 div.channel {
@@ -81,6 +80,19 @@ div.channel {
   text-align: left;
   padding-left: 30px;
   font-size: 16px;
+}
+
+div.subchannel {
+  position: relative;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 300;
+  width: 200px;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 16px;
+  float: left;
 }
 
 div.optimistic {
@@ -101,7 +113,6 @@ div.channelsList input {
 }
 
 div.channelsList:before {
-  content: "+";
   display: inline-block;
   height: 10px;
   width: 10px;
@@ -189,4 +200,5 @@ div.message span {
   position: absolute;
   left: 10px;
 }
+
 

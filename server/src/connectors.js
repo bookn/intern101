@@ -1,15 +1,12 @@
 import Mongoose from 'mongoose'
-import _ from 'lodash'
-import casual from 'casual'
-import rp from 'request-promise'
 
-const mongo = Mongoose.connect('mongodb://localhost:27017/views')
+Mongoose.connect('mongodb://localhost:27017/internjitta')
 
-const ViewSchema = Mongoose.Schema({
-  postId: Number,
-  views: Number,
+const EmailConfigSchema = Mongoose.Schema({
+  name: String,
+  description: String,
 })
 
-const View = Mongoose.model('views', ViewSchema)
+const EmailConfigs = Mongoose.model('emailconfigs', EmailConfigSchema)
 
-export { View }
+module.exports = { EmailConfigs }
