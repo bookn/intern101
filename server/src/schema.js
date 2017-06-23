@@ -22,6 +22,20 @@ type EmailConfigs {
   description: String
 }
 
+type FlowConfigs {
+  _id: ID!
+  name: String
+  description: String
+  actions: [Actions]
+  url: String
+  actionsLen: Int
+  successAction: Actions
+}
+
+type Actions {
+  name: String
+}
+
 input MessageInput{
   channelId: ID!
   text: String
@@ -32,7 +46,10 @@ type Query {
   channels: [Channel]    # "[]" means this is a list of channels
   channelById(id: ID!): Channel
   channelname(name: String!): [Channel]
-  emailconfigs: [EmailConfigs]
+  emailConfigs: [EmailConfigs]
+  flowConfigs: [FlowConfigs]
+  flowConfigById(id: ID!): FlowConfigs
+  emailConfigById(id: ID!): EmailConfigs
 }
 
 # The mutation root type, used to define all mutations

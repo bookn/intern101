@@ -1,5 +1,5 @@
 
-import { EmailConfigs } from './connectors'
+import { EmailConfigs, FlowConfigs } from './connectors'
 
 const channels = [{
   id: '1',
@@ -23,9 +23,6 @@ const channels = [{
   }]
 }]
 
-// let nextId = 3
-// let nextMessageId = 5
-
 const filterItems = (arr, query) => {
   const result = arr.filter((el) => {
     if (el.name.toLowerCase().indexOf(query.toLowerCase()) > -1) return el
@@ -45,9 +42,30 @@ export const resolvers = {
     channelname: (root, { name }) => {
       return filterItems(channels, name)
     },
-    emailconfigs: () => {
-      const result = EmailConfigs.find({}).lean().exec()
-        .then(mailconfig => mailconfig)
+    emailConfigs: () => {
+      const result = EmailConfigs.find({}, mailconfig => mailconfig)
+      // console.log(result)
+      return result
+    },
+    flowConfigs: () => {
+      const result = FlowConfigs.find({}, flowconfig => flowconfig)
+      // console.log(result)
+      return result
+    },
+    emailConfigById: (root, { id }) => {
+      const result = EmailConfigs.findById({ _id: id }).lean().exec()
+        .then((mailConfig) => {
+          console.log(mailConfig)
+          return mailConfig
+        })
+      return result
+    },
+    flowConfigById: (root, { id }) => {
+      const result = FlowConfigs.findById({ _id: id }).lean().exec()
+        .then((FlowConfig) => {
+          console.log(FlowConfig)
+          return FlowConfig
+        })
       return result
     }
   },
