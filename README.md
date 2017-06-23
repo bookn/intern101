@@ -1,30 +1,53 @@
-# graphql-tutorial / Hermes
-Full-stack GraphQL tutorials with React, Redux and Apollo
+# server 
+- create schema and connect database
+	- emailconfigs
+	- flowconfigs
+	- users
+	- emaillogs
+	- userlogs
+- tracking user’s action from demo
+- build to apollo server 
+	- create resolvers, connectors and schema
+- join apollo server with tracking server
 
-1. Build a simple React app with GraphQL and Apollo
-2. Build a simple GraphQL server in 15 mins
-3. Adding mutations to your React/GraphQL app
+client 
+- create apollo client 
+- admin page
+	- email configs
+	- flow configs
+	- userlist
+	- emaillogs
+- demo page
 
-More ideas for later (building on each other)...
+# done
 
-... client:
-- Advanced: updating the GraphQL store after mutations
-- mutations and optimistic UI
-- Pagination
-- Developer tools for GraphQL
-- A quick tour of GraphiQL
+server 85%
+- apollo server 
+- tracking server
+- database connection
 
+client 75%
+- admin page
+	- email configs
+	- flow configs
+- demo page that can send action to server
 
-... server:
-- connecting to a REST backend
-- connecting to a Mongo backend
-- connecting to a SQL backend
-- advanced: structuring your GraphQL server
-- modularizing your GraphQL schema
+# processing
 
-... full-stack
-- CRUD mutations in GraphQL: create
-- CRUD mutations in GraphQL: update
-- CRUD mutations in GraphQL: delete
+server
+- connect apollo server with tracking server
 
+client 
+- emaillogs page
+- flowconfigs page
 
+ - - - - 
+ 
+# branch
+
+task/client-only 
+	- apollo client with pages
+task/server-only 
+	- apollo server 
+task/server-client-react 
+	- connect apollo server with apollo client
