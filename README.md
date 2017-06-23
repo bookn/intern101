@@ -1,4 +1,6 @@
-# server 
+# all
+
+server 
 - create schema and connect database
 	- emailconfigs
 	- flowconfigs
