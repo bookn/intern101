@@ -24,16 +24,6 @@ a {
   color: inherit;
 }
 
-div.NotFound {
-  position: relative;
-  padding: 10px 50px;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 300;
-  width: 200px;
-  text-align: left;
-  font-size: 16px;
-}
-
 .navbar {
   font-family: 'Open Sans', sans-serif;
   box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2);
@@ -50,10 +40,10 @@ div.NotFound {
 
 .navbar:before {
   content: "";
-  height: 60px;
-  width: 80px;
+  height: 40px;
+  width: 60px;
   display: inline-block;
-  background-image: url('./apollo-logo.svg');
+  background-image: url('../images/apollo-logo.svg');
   background-repeat: no-repeat;
   background-position: center; 
   background-size: contain;
@@ -71,24 +61,30 @@ div.channelsList {
 }
 
 div.channel {
-  position: relative;
   padding: 10px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.8);
   font-weight: 300;
-  width: 200px;
   text-align: left;
   padding-left: 30px;
   font-size: 16px;
 }
 
+a div.channel:hover {
+  text-decoration: none;
+  background-color:#2a2d2e;
+  transition: 300ms all ease-out;
+}
+
+a:hover {
+  text-decoration: none;
+}
 div.subchannel {
   position: relative;
   padding: 10px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.8);
   font-weight: 300;
-  width: 200px;
   text-align: left;
   padding-left: 30px;
   font-size: 16px;
@@ -100,8 +96,9 @@ div.optimistic {
 }
 
 div.channelsList input {
-  width: 200px;
-  background-color: transparent;
+  width: 100%;
+  background-color: #3c3c3c;
+  margin-bottom: 20px;
   padding: 10px 20px 10px 30px;
   outline: none;
   border: none;
@@ -112,18 +109,22 @@ div.channelsList input {
   transition: 300ms all ease-out;
 }
 
-div.channelsList:before {
+/*div.channelsList:before {
   display: inline-block;
   height: 10px;
   width: 10px;
-  /*background-color: #fff;*/
   position: absolute;
   top: 11px;
   left: 40px;
   color: rgba(255, 255, 255, 0.6);
-}
+}*/
 
 div.channelsList input:focus {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  transition: 300ms all ease-out;
+}
+
+div.channelsList input:hover {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   transition: 300ms all ease-out;
 }
@@ -167,7 +168,6 @@ div.optimistic {
 }
 
 div.messagesList input {
-  width: 200px;
   background-color: transparent;
   padding: 10px 20px 10px 30px;
   outline: none;

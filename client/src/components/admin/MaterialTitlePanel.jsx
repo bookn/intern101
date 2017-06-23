@@ -1,25 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components'
 
 const styles = {
   root: {
     fontFamily: '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
     fontWeight: 300,
-  },
-  header: {
-    backgroundColor: '#03a9f4',
-    color: 'white',
-    padding: '16px',
-    fontSize: '1.5em',
-  },
+  }
 };
 
+const Header = styled.div`
+  background-color: #2472C8;
+  color: white;
+  padding: 20px;
+  font-size: 1.5em;
+`
+
 const MaterialTitlePanel = (props) => {
-  const rootStyle = props.style ? {...styles.root, ...props.style} : styles.root;
+  const rootStyle = props.style ? { ...styles.root, ...props.style } : styles.root;
 
   return (
     <div style={rootStyle}>
-      <div style={styles.header}>{props.title}</div>
+      <Header>{props.title}</Header>
       {props.children}
     </div>
   );

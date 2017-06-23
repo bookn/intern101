@@ -17,6 +17,7 @@ import {
 
 import AddChannel from './AddChannel'
 import SearchChannel from './SearchChannel'
+import EmailConfigs from './EmailConfigs'
 import NotFound from './NotFound'
 
 const styles = {
@@ -26,7 +27,7 @@ const styles = {
   }
 }
 
-const ChannelsList = ({ data: { loading, error, channels, emailconfigs } }) => {
+const ChannelsList = ({ data: { loading, error, channels, emailConfigs } }) => {
   if (loading) {
     return <p>Loading ...</p>
   }
@@ -35,8 +36,10 @@ const ChannelsList = ({ data: { loading, error, channels, emailconfigs } }) => {
     return <p>{error.message}</p>
   }
 
-  if (!channels || !emailconfigs) {
+  if (!channels || !emailConfigs) {
     return <p>Loading ...</p>
+  } else {
+    console.log(emailConfigs)
   }
   const dummySentences = ['Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 'Donec hendrerit tempor tellus.', 'Donec pretium posuere tellus.', 'Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.', 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 'Nulla posuere.', 'Donec vitae dolor.', 'Nullam tristique diam non turpis.', 'Cras placerat accumsan nulla.', 'Nullam rutrum.', 'Nam vestibulum accumsan nisl.']
   const dummy = () => (<div> test </div>)
@@ -50,7 +53,7 @@ const ChannelsList = ({ data: { loading, error, channels, emailconfigs } }) => {
               <SearchChannel />
               { channels.map(ch => (
                 <div key={ch.id} className={`channel ${ch.id < 0 ? 'optimistic' : ''}`}>
-                  <Link to={ch.id < 0 ? '/' : `channel/${ch.id}`}>
+                  <Link to={ch.id < 0 ? '/' : `/channel/${ch.id}`}>
                     {ch.name}
                   </Link>
                 </div>
@@ -58,12 +61,10 @@ const ChannelsList = ({ data: { loading, error, channels, emailconfigs } }) => {
               )}
             </Col>
             <Col sm={6} md={3}>
-              <AddChannel />
-              <SearchChannel />
-              { channels.map(ch => (
-                <div key={ch.id} className={`channel ${ch.id < 0 ? 'optimistic' : ''}`}>
-                  <Link to={ch.id < 0 ? '/' : `channel/${ch.id}`}>
-                    {ch.name}
+              { emailConfigs.map(emailconfig => (
+                <div key={emailconfig._id} className="channel" >
+                  <Link to={`/emailConfigs/${emailconfig._id}`}>
+                    {emailconfig.name}
                   </Link>
                 </div>
                 )
@@ -71,6 +72,9 @@ const ChannelsList = ({ data: { loading, error, channels, emailconfigs } }) => {
             </Col>
             <Col sm={6} md={3}>
               <div className="App">
+                <Switch>
+                  <Route path="/emailConfigs/:emailConfigId" component={EmailConfigs} />
+                </Switch>
                 <Link key="1" to="/maillogs/test" style={styles.sidebarLink}>
                   Mail Configuration
                 </Link>
@@ -106,7 +110,7 @@ export const channelsListQuery = gql`
       id
       name
     }
-    emailconfigs {
+    emailConfigs {
       _id
       name
       description

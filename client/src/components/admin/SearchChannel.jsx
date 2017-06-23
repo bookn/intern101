@@ -1,7 +1,7 @@
 import React from 'react'
 import { gql, graphql } from 'react-apollo'
 
-import { channelsListQuery } from './ChannelsListWithData'
+import { channelsListQuery } from './EmailConfigsMenu'
 
 const SearchChannel = ({ mutate }) => {
   const searchKeyUp = (evt) => {

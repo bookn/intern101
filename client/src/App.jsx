@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
+  Redirect
 } from 'react-router-dom'
 import {
   ApolloClient,
@@ -13,14 +14,17 @@ import {
 } from 'react-apollo'
 import Sidebar from 'react-sidebar'
 
-import './App.css'
+import './static/css/App.css'
 
-import SidebarContent from './components/SidebarContent'
-import ChannelsListWithData from './components/ChannelsListWithData'
-import NotFound from './components/NotFound'
-// import ChannelDetails from './components/ChannelDetails'
+import EmailConfigsMenu from './components/admin/EmailConfigsMenu'
+import FlowConfigsMenu from './components/admin/FlowConfigsMenu'
+import SidebarContent from './components/admin/SidebarContent'
+import NotFound from './components/admin/NotFound'
+
+import Register from './components/demo/Register'
 
 const networkInterface = createNetworkInterface({ uri: 'http://localhost:4000/graphql' })
+
 networkInterface.use([{
   applyMiddleware(req, next) {
     setTimeout(next, 500)
@@ -51,8 +55,8 @@ const client = new ApolloClient({
 const styles = {
   staticMenu: {
     borderRadius: '0px 10px 10px 0px',
-    width: '40px',
-    fontSize: '20px',
+    width: '35px',
+    fontSize: '15px',
     backgroundColor: 'rgba(255,255,255,0.5)',
     textDecoration: 'none',
     color: 'white',
@@ -129,7 +133,7 @@ class App extends React.Component {
         {
           !this.state.docked &&
           <a onClick={this.toggleOpen.bind(this)} href="" style={styles.staticMenu}>
-          }
+            M<br />E<br />N<br />U
           </a>
         }
       </div>)
@@ -143,24 +147,33 @@ class App extends React.Component {
 
     return (
       <Router>
-        <Sidebar {...sidebarProps}>
-          <ApolloProvider client={client}>
-            <div className="App">
-              {toggleMenu}
-              <div className="navbar" >
-                Tracking E-Mail<span className="sub"> { this.state.notMobile && ' : By Plearn.io' } </span>
-              </div>
-              <Switch>
-                <Route path="/mailconfigs" component={ChannelsListWithData} />
-                <Route path="/flows" component={ChannelsListWithData} />
-                <Route path="/maillogs" component={ChannelsListWithData} />
-                <Route path="/userlist" component={NotFound} />
-                {/* <Route path="/channel/:channelId" component={ChannelDetails} /> */}
-                <Route component={NotFound} />
-              </Switch>
-            </div>
-          </ApolloProvider>
-        </Sidebar>
+        <Switch>
+          <Route exact path="/demo/" component={Register} />
+          <Route path="/admin/">
+            <Sidebar {...sidebarProps}>
+              <ApolloProvider client={client}>
+                <div className="App">
+                  {toggleMenu}
+                  <div className="navbar" >
+                    Tracking E-Mail
+                  </div>
+                  <Switch>
+                    <Route path="/admin/emailconfigs" component={EmailConfigsMenu} />
+                    <Route path="/admin/flowconfigs" component={FlowConfigsMenu} />
+                    <Route path="/admin/maillogs" component={EmailConfigsMenu} />
+                    <Route path="/admin/userlist" component={NotFound} />
+                    <Route path="/">
+                      <Redirect to="/admin/emailconfigs" />
+                    </Route>
+                  </Switch>
+                </div>
+              </ApolloProvider>
+            </Sidebar>
+          </Route>
+          <Route path="/">
+            <Redirect to="/demo" />
+          </Route>
+        </Switch>
       </Router>
     )
   }
